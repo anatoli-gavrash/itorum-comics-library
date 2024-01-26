@@ -1,5 +1,5 @@
 export interface Library {
-  data: [Comic] | null
+  response: MarvelResponseData | null
   status: 'empty' | 'loading' | 'done' | 'error'
 }
 
@@ -8,10 +8,11 @@ export interface UrlParts {
   version: 'v1'
   type: 'public'
   resources: 'comics'
+  id?: number
 }
 
 export interface Params {
-  apikey: string
+  apikey?: string
 }
 
 export interface ParamsComics extends Params {
@@ -39,7 +40,7 @@ export interface ParamsComics extends Params {
   stories?: number
   sharedAppearances?: number
   collaborators?: number
-  orderBy?: 'focDate' | 'onsaleDate' | 'title' | 'issueNumber' | 'modified' | '-focDate' | '-onsaleDate' | '-title' | '-issueNumber' | '-modified'
+  orderBy?: string
   limit?: number
   offset?: number
 }

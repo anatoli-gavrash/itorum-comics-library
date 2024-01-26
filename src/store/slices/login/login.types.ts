@@ -7,5 +7,6 @@ export interface User {
   login: string
   firstname: string
   lastname: string
+  avatar: string
   purchases: [number] | null
 }
