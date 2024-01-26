@@ -4,6 +4,7 @@ import styles from './Footer.module.scss';
 
 const Footer: React.FC = () => {
   const libResp = useAppSelector(libraryResponse);
+
   return (
     <footer className={styles.footer}>{libResp?.attributionText}</footer>
   );
