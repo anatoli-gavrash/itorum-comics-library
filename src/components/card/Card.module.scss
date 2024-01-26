@@ -58,11 +58,19 @@
       border-radius: 2px;
       background-color: var(--color-bkgr-main-transp);
       transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+
+      &.active {
+        color: var(--color-red);
+      }
     }
 
     .button:hover {
       background-color: var(--color-bkgr-main-transp);
       color: var(--color-sandy);
+
+      &.active {
+        color: var(--color-red-light);
+      }
     }
   }
 }

@@ -8,5 +8,6 @@ export interface User {
   firstname: string
   lastname: string
   avatar: string
-  purchases: [number] | null
+  favorites: [number?] | null
+  purchases: [number?] | null
 }

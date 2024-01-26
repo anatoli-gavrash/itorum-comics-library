@@ -20,6 +20,7 @@ const defaultUser: User = {
   firstname: 'Дмитрий',
   lastname: 'Бахметьев',
   avatar: iconItorum,
+  favorites: null,
   purchases: null
 }
 
