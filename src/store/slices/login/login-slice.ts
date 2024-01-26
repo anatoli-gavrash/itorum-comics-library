@@ -10,12 +10,15 @@ export const loginSlice = createAppSlice({
   name: 'login',
   initialState: initialState,
   reducers: (create) => ({
-    changeCurrentUser: create.reducer(({currentUser}, action: PayloadAction<User | null>) => {
-      currentUser = action.payload;
+    setCurrentUser: create.reducer((state, action: PayloadAction<User | null>) => {
+      state.currentUser = action.payload;
     }),
-    addPurchase: create.reducer(({currentUser}, action: PayloadAction<number>) => {
-      if (currentUser?.purchases && !currentUser?.purchases.find((value) => value === action.payload)) {
-        currentUser.purchases.push(action.payload);
+    addPurchase: create.reducer((state, action: PayloadAction<number>) => {
+      if (
+        state.currentUser?.purchases &&
+        !state.currentUser?.purchases.find((value) => value === action.payload
+      )) {
+        state.currentUser.purchases.push(action.payload);
       }
     })
   }),
@@ -24,5 +27,5 @@ export const loginSlice = createAppSlice({
   }
 });
 
-export const {changeCurrentUser, addPurchase} = loginSlice.actions;
+export const {setCurrentUser, addPurchase} = loginSlice.actions;
 export const {currentUser} = loginSlice.selectors;
