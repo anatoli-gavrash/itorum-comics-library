@@ -16,7 +16,7 @@ const createUrl = (pathParts: UrlParts, params?: ParamsComics): string => {
   let finalParams = '';
 
   if (params) {
-    const tempParams = Object.fromEntries(Object.entries(params).filter(([_, v]) => v != ''));
+    const tempParams = Object.fromEntries(Object.entries(params).filter(([_, v]) => v !== ''));
     finalParams = '?' + Object.entries(tempParams).map((pair) => pair.join('=')).join('&');
   }
 

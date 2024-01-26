@@ -1,4 +1,4 @@
-import { Comic } from '../../store/slices/library/library.types';
+import type { Comic } from '../../store/slices/library/library.types';
 import { useAppSelector } from '../../hooks/hooks';
 import { libraryStatus } from '../../store/slices/library/library-slice';
 import styles from './ComicList.module.scss';

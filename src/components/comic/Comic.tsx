@@ -17,7 +17,7 @@ const Comic: React.FC = () => {
   
   useEffect(() => {
     dispatch(getComic(Number(idComic)));
-  }, []);
+  }, [dispatch, idComic]);
 
   return (
     <article className={styles.comic}>

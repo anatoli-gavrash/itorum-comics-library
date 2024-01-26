@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import styles from './Library.module.scss';
 import Pagination from '../pagination';
 import ComicList from '../comic-list';
-import { Comic } from '../../store/slices/library/library.types';
+import type { Comic } from '../../store/slices/library/library.types';
 import Search from '../search';
 
 const pageValueProcessing = (min: number, max: number, value: number): number => {
@@ -34,12 +34,12 @@ const Library: React.FC = () => {
 
   useEffect(() => {
     dispatch(getComics({limit: cardCountOnPage, offset: offset, titleStartsWith: searchValue}));
-  }, [dispatch, offset, searchValue]);
+  }, [dispatch, offset, searchValue, cardCountOnPage]);
 
   useEffect(() => {
     const newOffset = cardCountOnPage * (currentPage - 1);
     if (offset !== newOffset) setOffset(newOffset);
-  }, [cardCountOnPage, currentPage]);
+  }, [offset, cardCountOnPage, currentPage]);
 
   useEffect(() => {
     if (libData?.results) setComicsList(libData.results);

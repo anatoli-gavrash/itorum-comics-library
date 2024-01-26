@@ -12,7 +12,7 @@ import styles from './LoginForm.module.scss';
 import { useAppDispatch } from '../../hooks/hooks';
 import { setCurrentUser } from '../../store/slices/login/login-slice';
 import iconItorum from '../../assets/img/jpg/icon__itorum.jpg';
-import { User } from '../../store/slices/login/login.types';
+import type { User } from '../../store/slices/login/login.types';
 
 const defaultUser: User = {
   id: 999999,
