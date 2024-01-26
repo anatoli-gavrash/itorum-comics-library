@@ -1,0 +1,29 @@
+form.search {
+  margin: 0 auto;
+  background-color: var(--color-bkgr-main-transp);
+  justify-content: center;
+  width: 60%;
+  border: 1px solid transparent;
+  transition: border 0.2s ease-in-out;
+  
+  &:hover {
+    border: 1px solid var(--color-border-white-transp-med);
+  }
+
+  @media (max-width: 1024px) {
+    width: 90%;
+  }
+
+  .input {
+    color: var(--color-font-gray);
+  }
+
+  .button {
+    background-color: unset;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  }
+
+  .button:hover {
+    color: var(--color-sandy);
+  }
+}
