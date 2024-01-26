@@ -1,0 +1,30 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  --color-sandy: rgba(245, 222, 179);
+  --color-font-gray: rgb(204, 204, 204);
+  --color-bkgr-main: rgb(31, 31, 31);
+  --color-bkgr-main-transp: rgba(31, 31, 31, 0.75);
+  --color-bkgr-white-transp: rgba(255, 255, 255, 0.1);
+  --color-border-white-transp: rgba(255, 255, 255, 0.2);
+  --color-border-white-transp-med: rgba(245, 222, 179, 0.5);
+}
+
+html {
+  scrollbar-gutter: stable;
+  background-color: var(--color-bkgr-main);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  color: var(--color-font-gray);
+}

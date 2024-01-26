@@ -1,0 +1,24 @@
+.authorize {
+  .button {
+    transition: background-color 0.2s ease-in-out;
+
+    div {
+      transition: color 0.2s ease-in-out;
+    }
+
+    &:hover {
+      div {
+        color: var(--color-sandy);
+      }
+    }
+  }
+}
+
+.menu ul {
+  background-color: var(--color-bkgr-main);
+  border-bottom: 2px solid var(--color-border-white-transp-med);
+
+  .menuListItem {
+    color: var(--color-font-gray);
+  }
+}
