@@ -56,4 +56,27 @@ const getUserFromLocalData = (login: string, password: string): User | null => {
   return findUser({login, password});
 }
 
-export {getLocalData, setLocalData, getCurrentUserLocal, getUserFromLocalData};
+const updateUserLocalData = (key: LocalDataKeys, user: User): void => {
+  const users = getLocalData(key);
+  const data = users && users[key];
+
+  if (Array.isArray(data)) {
+    const newData = data.map((localUser) => {
+      if (localUser.id === user.id) {
+        return {...localUser, ...user};
+      }
+
+      return localUser;
+    });
+
+    setLocalData(key, newData);
+  }
+};
+
+export {
+  getLocalData,
+  setLocalData,
+  getCurrentUserLocal,
+  getUserFromLocalData,
+  updateUserLocalData
+};

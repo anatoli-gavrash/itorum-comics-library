@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import { currentUser, setCurrentUser } from "./store/slices/login/login-slice";
-import { getCurrentUserLocal, setLocalData } from "./services/local-storage";
+import { getCurrentUserLocal, getLocalData, setLocalData, updateUserLocalData } from "./services/local-storage";
 import { LocalDataKeys } from "./services/local-storage.types";
 import usersData from "./usersData";
 import styles from "./App.module.scss";
@@ -15,13 +15,17 @@ const App: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    setLocalData(LocalDataKeys.USERS_DATA, usersData);
+    if (!getLocalData(LocalDataKeys.USERS_DATA)) {
+      setLocalData(LocalDataKeys.USERS_DATA, usersData);
+    }
+    
     dispatch(setCurrentUser(getCurrentUserLocal(LocalDataKeys.CURRENT_USER)));
   }, []);
 
   useEffect(() => {
     if (user !== undefined) {
       setLocalData(LocalDataKeys.CURRENT_USER, user?.id || null);
+      user && updateUserLocalData(LocalDataKeys.USERS_DATA, user);
     }
   }, [user]);
 
