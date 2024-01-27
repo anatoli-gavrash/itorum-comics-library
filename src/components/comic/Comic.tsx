@@ -1,47 +1,54 @@
 import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './Comic.module.scss';
 import { getComic, libraryData } from '../../store/slices/library/library-slice';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { Button as ButtonMui, Tooltip } from '@mui/material';
 import { AddShoppingCart, Favorite } from '@mui/icons-material';
-import { currentUser } from '../../store/slices/login/login-slice';
+import { addPurchase, currentUser, toggleFavorite } from '../../store/slices/login/login-slice';
 
 const Comic: React.FC = () => {
   const {idComic} = useParams();
   const dispatch = useAppDispatch();
   const user = useAppSelector(currentUser);
   const libData = useAppSelector(libraryData);
-  const isFavorite = false;
-  const isBuying = false;
+  const comic = libData?.results?.[0];
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const [isPurchase, setIsPurchase] = useState<boolean>(false);
   
   useEffect(() => {
     dispatch(getComic(Number(idComic)));
   }, [dispatch, idComic]);
 
+  useEffect(() => {
+    setIsFavorite(!!user?.favorites?.find((favorite) => favorite === comic?.id));
+    setIsPurchase(!!user?.purchases?.find((purchase) => purchase === comic?.id));
+  }, [user]);
+
   return (
     <article className={styles.comic}>
       <h2 className={styles.title}>Комикс</h2>
       <hr className={styles.delimeter} />
-      {libData && 
+      {comic ? 
       <div className={styles.content}>
         <img 
           className={styles.image}
-          src={`${libData.results?.[0]?.thumbnail?.path}.${libData.results?.[0]?.thumbnail?.extension}`}
-          alt={libData.results?.[0]?.title}
+          src={`${comic.thumbnail?.path}.${comic.thumbnail?.extension}`}
+          alt={comic.title}
         />
         <section className={styles.textBlock}>
-          <h3 className={styles.comicTitle}>{libData.results?.[0]?.title || libData.results?.[0]?.variantDescription}</h3>
+          <h3 className={styles.comicTitle}>{comic.title || comic.variantDescription}</h3>
           <p className={styles.date}></p>
-          <p className={styles.description}>{libData.results?.[0]?.textObjects?.[0]?.text || libData.results?.[0]?.description}</p>
-          <p className={styles.price}>{libData.results?.[0]?.prices?.[0]?.price + ' $'}</p>
+          <p className={styles.description}>{comic.textObjects?.[0]?.text || comic.description}</p>
+          <p className={styles.price}>{comic.prices?.[0]?.price + ' $'}</p>
           <div className={styles.buttons}>
             <Tooltip title={!user && 'Требуется регистрация'} placement="bottom">
               <span>
                 <ButtonMui
-                  className={styles.button}
+                  className={`${styles.button} ${isFavorite ? styles.active : ''}`}
                   size={'large'}
                   startIcon={<Favorite />}
+                  onClick={() => comic.id && dispatch(toggleFavorite(comic.id))}
                   disabled={!user}
                 >
                   {isFavorite ? 'Из избранного' : 'В избранное'}
@@ -49,17 +56,19 @@ const Comic: React.FC = () => {
               </span>
             </Tooltip>
             <ButtonMui
-              className={styles.button}
+              className={`${styles.button} ${styles.purchase}`}
               size={'large'}
               startIcon={<AddShoppingCart />}
-              disabled={!(Number(libData.results?.[0]?.prices?.[0]?.price) > 0)}
+              onClick={() => comic.id && dispatch(addPurchase(comic.id))}
+              disabled={!(Number(comic.prices?.[0]?.price) > 0) || isPurchase}
               sx={{display: user ? `flex` : `none`}}
             >
-              {isBuying ? 'Куплено' : 'Купить'}
+              {isPurchase ? 'Куплено' : 'Купить'}
             </ButtonMui>
           </div>
         </section>
-      </div>}
+      </div>
+      : <div className={styles.notFound}>Нам не удалось найти комикс</div>}
     </article>
   );
 };

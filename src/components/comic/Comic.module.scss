@@ -62,7 +62,31 @@
             color: var(--color-sandy);
           }
         }
+
+        .purchase {
+          svg {
+            color: var(--color-green);
+          }
+
+          &:disabled svg {
+            color: var(--color-sandy);
+          }
+        }
+
+        .active svg {
+          color: var(--color-red);
+        }
       }
     }
+  }
+
+  .notFound {
+    display: flex;
+    height: 30vh;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    text-align: center;
+    color: var(--color-font-gray);
   }
 }
