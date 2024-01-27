@@ -1,11 +1,11 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import styles from './Comic.module.scss';
-import { getComic, libraryData } from '../../store/slices/library/library-slice';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { Button as ButtonMui, Tooltip } from '@mui/material';
 import { AddShoppingCart, Favorite } from '@mui/icons-material';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { getComic, libraryData } from '../../store/slices/library/library-slice';
 import { addPurchase, currentUser, toggleFavorite } from '../../store/slices/login/login-slice';
+import styles from './Comic.module.scss';
 
 const Comic: React.FC = () => {
   const {idComic} = useParams();
@@ -23,7 +23,7 @@ const Comic: React.FC = () => {
   useEffect(() => {
     setIsFavorite(!!user?.favorites?.find((favorite) => favorite === comic?.id));
     setIsPurchase(!!user?.purchases?.find((purchase) => purchase === comic?.id));
-  }, [user]);
+  }, [user, libData]);
 
   return (
     <article className={styles.comic}>
