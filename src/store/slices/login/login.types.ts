@@ -1,5 +1,5 @@
 export interface Login {
-  currentUser: User | null
+  currentUser: User | null | undefined
 }
 
 export interface User {

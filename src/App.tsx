@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import styles from "./App.module.scss";
-import Header from "./components/header";
-import Footer from './components/footer';
-import Aside from "./components/aside";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import { currentUser, setCurrentUser } from "./store/slices/login/login-slice";
 import { getCurrentUserLocal, setLocalData } from "./services/local-storage";
 import { LocalDataKeys } from "./services/local-storage.types";
 import usersData from "./usersData";
+import styles from "./App.module.scss";
+import Header from "./components/header";
+import Aside from "./components/aside";
+import Footer from './components/footer';
 
 const App: React.FC = () => {
   const user = useAppSelector(currentUser);
@@ -16,14 +16,14 @@ const App: React.FC = () => {
 
   useEffect(() => {
     setLocalData(LocalDataKeys.USERS_DATA, usersData);
-    
-    if (user === null) {
-      dispatch(setCurrentUser(getCurrentUserLocal(LocalDataKeys.CURRENT_USER)));
-    }
-  }, [])
+    dispatch(setCurrentUser(getCurrentUserLocal(LocalDataKeys.CURRENT_USER)));
+  }, []);
 
   useEffect(() => {
-  }, [user] )
+    if (user !== undefined) {
+      setLocalData(LocalDataKeys.CURRENT_USER, user?.id || null);
+    }
+  }, [user]);
 
   return (
     <div className={styles.app}>

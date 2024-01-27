@@ -3,7 +3,7 @@ import { createAppSlice } from "../createAppSlice";
 import type { Login, User } from "./login.types";
 
 const initialState: Login = {
-  currentUser: null
+  currentUser: undefined
 };
 
 export const loginSlice = createAppSlice({

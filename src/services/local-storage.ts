@@ -1,5 +1,5 @@
 import { User } from "../store/slices/login/login.types";
-import { FindUserParams, LocalCurrentUser, LocalData, LocalDataKeys, LocalDataStruct, LocalUser, LocalUsersData } from "./local-storage.types";
+import { FindUserParams, LocalData, LocalDataKeys, LocalDataStruct, LocalUser} from "./local-storage.types";
 
 const getLocalData = (key: LocalDataKeys): LocalDataStruct | null => {
   const result = localStorage.getItem(key);
