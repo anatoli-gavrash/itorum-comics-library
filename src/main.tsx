@@ -15,6 +15,7 @@ import Error404 from './components/error404';
 import Library from "./components/library";
 import Comic from './components/comic';
 import Favorites from "./components/favorites";
+import Purchases from "./components/purchases";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);
@@ -27,8 +28,8 @@ const router = createBrowserRouter(
       <Route path='comic/:idComic' element={<Comic />} />
       <Route path='favorites' element={<Favorites />} />
       <Route path='favorites/page/:idFavorite' element={<Favorites />} />
-      <Route path='purchases' element={<Comic />} />
-      <Route path='purchases/page/:idPurchase' element={<Comic />} />
+      <Route path='purchases' element={<Purchases />} />
+      <Route path='purchases/page/:idPurchase' element={<Purchases />} />
     </Route>
   )
 );
