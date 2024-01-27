@@ -44,12 +44,4 @@ const fetchComics = async (customParams?: ParamsComics): Promise<MarvelResponseD
   return (await fetchData(createUrl(urlParts, params))).json();
 };
 
-const getLocalData = (key: string) => {
-  return JSON.parse(localStorage.getItem(key) || '');
-};
-
-const setLocalData = (key: string, data: any) => {
-  localStorage.setItem(key, JSON.stringify(data));
-};
-
 export {fetchComic, fetchComics};

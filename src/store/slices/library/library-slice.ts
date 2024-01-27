@@ -1,6 +1,7 @@
 import { createAppSlice } from "../createAppSlice";
 import type { Library, ParamsComics } from "./library.types";
 import { fetchComic, fetchComics } from "./library-service";
+import { getLocalData } from "../../../services/local-storage";
 
 const initialState: Library = {
   response: null,
