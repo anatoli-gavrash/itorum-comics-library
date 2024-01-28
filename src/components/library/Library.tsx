@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getComics, libraryData } from '../../store/slices/library/library-slice';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import type { Comic } from '../../store/slices/library/library.types';
 import styles from './Library.module.scss';
 import Pagination from '../pagination';
 import ComicList from '../comic-list';
-import type { Comic } from '../../store/slices/library/library.types';
 import Search from '../search';
 
 const pageValueProcessing = (min: number, max: number, value: number): number => {
@@ -27,7 +27,7 @@ const Library: React.FC = () => {
   const [offset, setOffset] = useState<number>(0);
   const [cardCountOnPage, setCardCountOnPage] = useState<number>(20);
   const [maxPages, setMaxPages] = useState<number>(1);
-  const [comicsList, setComicsList] = useState<[Comic] | null>(null);
+  const [comicsList, setComicsList] = useState<Comic[] | null>(null);
   const [searchValue, setSearchValue] = useState<string>('');
   const defaultPath = '/';
   const currentPage = pageValueProcessing(1, maxPages, Number(idLibrary));

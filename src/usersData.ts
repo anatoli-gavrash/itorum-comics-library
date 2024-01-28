@@ -1,4 +1,4 @@
-import { LocalUser } from './services/local-storage.types';
+import type { LocalUser } from './services/local-storage.types';
 import iconItorum from './assets/img/jpg/icon__itorum.jpg';
 
 

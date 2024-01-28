@@ -1,4 +1,4 @@
-import { User } from "../store/slices/login/login.types";
+import type { User } from "../store/slices/login/login.types";
 
 export interface LocalUser extends User {
   password: string

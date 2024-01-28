@@ -6,7 +6,7 @@ import Card from '../card';
 import Loader from '../loader';
 
 interface ComicListProps {
-  cardList: [Comic] | null
+  cardList: Comic[] | null
 }
 
 const ComicList: React.FC<ComicListProps> = (props) => {

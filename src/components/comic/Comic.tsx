@@ -23,7 +23,7 @@ const Comic: React.FC = () => {
   useEffect(() => {
     setIsFavorite(!!user?.favorites?.find((favorite) => favorite === comic?.id));
     setIsPurchase(!!user?.purchases?.find((purchase) => purchase === comic?.id));
-  }, [user, libData]);
+  }, [user, libData, comic]);
 
   return (
     <article className={styles.comic}>

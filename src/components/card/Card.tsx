@@ -16,7 +16,6 @@ const Card: React.FC<CardProps> = (props) => {
   const {id, image, title} = props;
   const user = useAppSelector(currentUser);
   const dispatch = useAppDispatch();
-  const isTrue = false;
   
   return (
     <div className={styles.card}>
