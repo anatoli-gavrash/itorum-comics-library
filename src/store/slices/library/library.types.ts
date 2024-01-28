@@ -11,6 +11,11 @@ export interface UrlParts {
   id?: number
 }
 
+export interface LibraryActionValues {
+  idList: number[],
+  customParams: ParamsComics
+}
+
 export interface Params {
   apikey?: string
 }

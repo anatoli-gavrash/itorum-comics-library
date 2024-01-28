@@ -1,6 +1,6 @@
 import { createAppSlice } from "../createAppSlice";
-import type { Library, ParamsComics } from "./library.types";
-import { fetchComic, fetchComics } from "./library-service";
+import type { Library, LibraryActionValues, ParamsComics } from "./library.types";
+import { fetchComic, fetchComics, fetchComicsFromIdList } from "./library-service";
 
 const initialState: Library = {
   response: null,
@@ -40,6 +40,25 @@ export const librarySlice = createAppSlice({
       rejected: (state) => {
         state.status = 'error';
       }
+    }),
+    getComicsFromIdList: create.asyncThunk(async (values: LibraryActionValues) => {
+      return await fetchComicsFromIdList(values);
+    },
+    {
+      pending: (state) => {
+        state.status = 'loading';
+      },
+      fulfilled: (state, action) => {
+        state.response = action.payload;
+        state.status = 'done';
+      },
+      rejected: (state) => {
+        state.status = 'error';
+      }
+    }),
+    resetLibrary: create.reducer((state) => {
+      state.response = null;
+      state.status = 'empty';
     })
   }),
   selectors: {
@@ -49,5 +68,5 @@ export const librarySlice = createAppSlice({
   }
 });
 
-export const {getComic, getComics} = librarySlice.actions;
+export const {getComic, getComics, getComicsFromIdList, resetLibrary} = librarySlice.actions;
 export const {libraryResponse, libraryStatus, libraryData} = librarySlice.selectors;
