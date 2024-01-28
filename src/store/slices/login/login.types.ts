@@ -8,6 +8,11 @@ export interface User {
   firstname: string
   lastname: string
   avatar: string
-  favorites: number[] | null
-  purchases: number[] | null
+  favorites: UserStorage[] | null
+  purchases: UserStorage[] | null
+}
+
+export interface UserStorage {
+  id: number,
+  title: string
 }

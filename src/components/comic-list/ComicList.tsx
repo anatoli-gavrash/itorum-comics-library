@@ -15,12 +15,12 @@ const ComicList: React.FC<ComicListProps> = (props) => {
 
   return (
     <ul className={styles.comicList}>
-      {cardList && cardList.map((item, index) => (
-        <li className={styles.item} key={`li-${index}`}>
+      {cardList && cardList.map((item, index) => item && (
+        <li className={styles.item} key={`li-${index}-${item.id}`}>
           {status === 'loading' ? <Loader /> : <Card
-            id={item.id || 0}
+            data={{id: item.id!, title: item.title!}}
             image={`${item.thumbnail?.path}.${item.thumbnail?.extension}`}
-            title={`${item.title || ''}`}
+            title={`${item.title}`}
           />}
         </li>
       ))}

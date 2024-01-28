@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getComicsFromIdList, libraryData, resetLibrary } from '../../store/slices/library/library-slice';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import type { Comic } from '../../store/slices/library/library.types';
-import { validationPageValue } from '../../utils/utils';
+import { searchFilter, validationPageValue } from '../../utils/utils';
 import styles from './Favorites.module.scss';
 import Pagination from '../pagination';
 import ComicList from '../comic-list';
@@ -24,13 +24,17 @@ const Favorites: React.FC = () => {
   const currentPage = validationPageValue(1, maxPages, Number(idFavorite));
 
   useEffect(() => {
-    if (user?.favorites) dispatch(getComicsFromIdList({
-      idList: user.favorites,
-      customParams: {
-        limit: cardCountOnPage,
-        offset: offset
-      }
-    }));
+    if (user?.favorites) {
+      const ids = searchFilter(searchValue, user.favorites);
+      
+      dispatch(getComicsFromIdList({
+        idList: ids,
+        customParams: {
+          limit: cardCountOnPage,
+          offset: offset
+        }
+      }))
+    };
     
     return () => {
       dispatch(resetLibrary());

@@ -25,8 +25,8 @@ const Comic: React.FC = () => {
   }, [dispatch, idComic]);
 
   useEffect(() => {
-    setIsFavorite(!!user?.favorites?.find((favorite) => favorite === comic?.id));
-    setIsPurchase(!!user?.purchases?.find((purchase) => purchase === comic?.id));
+    setIsFavorite(!!user?.favorites?.find((favorite) => favorite.id === comic?.id));
+    setIsPurchase(!!user?.purchases?.find((purchase) => purchase.id === comic?.id));
   }, [user, libData, comic]);
 
   return (
@@ -52,7 +52,7 @@ const Comic: React.FC = () => {
                   className={`${styles.button} ${isFavorite ? styles.active : ''}`}
                   size={'large'}
                   startIcon={<Favorite />}
-                  onClick={() => comic.id && dispatch(toggleFavorite(comic.id))}
+                  onClick={() => comic.id && dispatch(toggleFavorite({id: comic.id!, title: comic.title!}))}
                   disabled={!user}
                 >
                   {isFavorite ? 'Из избранного' : 'В избранное'}
@@ -63,7 +63,7 @@ const Comic: React.FC = () => {
               className={`${styles.button} ${styles.purchase}`}
               size={'large'}
               startIcon={<AddShoppingCart />}
-              onClick={() => comic.id && dispatch(addPurchase(comic.id))}
+              onClick={() => comic.id && dispatch(addPurchase({id: comic.id!, title: comic.title!}))}
               disabled={!(Number(comic.prices?.[0]?.price) > 0) || isPurchase}
               sx={{display: user ? `flex` : `none`}}
             >

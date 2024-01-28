@@ -7,33 +7,36 @@ import { addPurchase, currentUser, toggleFavorite } from '../../store/slices/log
 import styles from './Card.module.scss';
 
 interface CardProps {
-  id: number,
+  data: {
+    id: number,
+    title: string
+  },
   image: string,
   title: string,
 }
 
 const Card: React.FC<CardProps> = (props) => {
-  const {id, image, title} = props;
+  const {data, image, title} = props;
   const user = useAppSelector(currentUser);
   const dispatch = useAppDispatch();
   
   return (
     <div className={styles.card}>
-      <Link className={styles.link} to={`/comic/${id}`}>
+      <Link className={styles.link} to={`/comic/${data.id}`}>
         <img className={styles.image} src={image} alt={title} />
         <h3 className={styles.title}>{title}</h3>
       </Link>
       {user && <div className={styles.buttonsWrapper}>
         <IconButton
-          className={`${styles.button} ${user.favorites?.find((favId) => favId === id) ? styles.active : ''}`}
-          onClick={() => dispatch(toggleFavorite(id))}
+          className={`${styles.button} ${user.favorites?.find(({id: comicId}) => comicId === data.id) ? styles.active : ''}`}
+          onClick={() => dispatch(toggleFavorite(data))}
         >
           <Favorite />
         </IconButton>
         <IconButton
           className={`${styles.button} ${styles.purchase}`}
-          disabled={!!user.purchases?.find((favId) => id === favId)}
-          onClick={() => dispatch(addPurchase(id))}
+          disabled={!!user.purchases?.find(({id: comicId}) => comicId === data.id)}
+          onClick={() => dispatch(addPurchase(data))}
         >
           <AddShoppingCart />
         </IconButton>
