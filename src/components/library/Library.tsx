@@ -1,24 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getComics, libraryData } from '../../store/slices/library/library-slice';
+import { getComics, libraryData, resetLibrary } from '../../store/slices/library/library-slice';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import type { Comic } from '../../store/slices/library/library.types';
+import { validationPageValue } from '../../utils/utils';
 import styles from './Library.module.scss';
 import Pagination from '../pagination';
 import ComicList from '../comic-list';
 import Search from '../search';
-
-const pageValueProcessing = (min: number, max: number, value: number): number => {
-  if (value && value >= min) {
-    if (value <= max) {
-      return value;
-    }
-
-    return max;
-  }
-
-  return min;
-};
 
 const Library: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -30,11 +19,15 @@ const Library: React.FC = () => {
   const [comicsList, setComicsList] = useState<Comic[] | null>(null);
   const [searchValue, setSearchValue] = useState<string>('');
   const defaultPath = '/';
-  const currentPage = pageValueProcessing(1, maxPages, Number(idLibrary));
+  const currentPage = validationPageValue(1, maxPages, Number(idLibrary));
 
   useEffect(() => {
     dispatch(getComics({limit: cardCountOnPage, offset: offset, titleStartsWith: searchValue}));
-  }, [dispatch, offset, searchValue, cardCountOnPage]);
+
+    return () => {
+      dispatch(resetLibrary());
+    };
+  }, [dispatch, offset, cardCountOnPage, searchValue]);
 
   useEffect(() => {
     const newOffset = cardCountOnPage * (currentPage - 1);

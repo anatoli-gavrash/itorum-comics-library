@@ -23,5 +23,5 @@ root.render(
         <CustomRoute />
       </ThemeProvider>
     </Provider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );

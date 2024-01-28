@@ -31,7 +31,7 @@ const Card: React.FC<CardProps> = (props) => {
           <Favorite />
         </IconButton>
         <IconButton
-          className={styles.button}
+          className={`${styles.button} ${styles.purchase}`}
           disabled={!!user.purchases?.find((favId) => id === favId)}
           onClick={() => dispatch(addPurchase(id))}
         >
