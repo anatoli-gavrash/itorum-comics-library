@@ -3,7 +3,7 @@ import { useAppSelector } from '../../hooks/hooks';
 import { libraryStatus } from '../../store/slices/library/library-slice';
 import styles from './ComicList.module.scss';
 import Card from '../card';
-import Loader from '../loader/Loader';
+import Loader from '../loader';
 
 interface ComicListProps {
   cardList: [Comic] | null
