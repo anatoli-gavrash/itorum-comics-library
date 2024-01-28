@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Button as ButtonMui, Tooltip } from '@mui/material';
 import { AddShoppingCart, Favorite } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { getComic, libraryData } from '../../store/slices/library/library-slice';
+import { getComic, libraryData, resetLibrary } from '../../store/slices/library/library-slice';
 import { addPurchase, currentUser, toggleFavorite } from '../../store/slices/login/login-slice';
 import styles from './Comic.module.scss';
 
@@ -18,6 +18,10 @@ const Comic: React.FC = () => {
   
   useEffect(() => {
     dispatch(getComic(Number(idComic)));
+
+    return () => {
+      dispatch(resetLibrary());
+    };
   }, [dispatch, idComic]);
 
   useEffect(() => {
