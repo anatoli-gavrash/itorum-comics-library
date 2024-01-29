@@ -17,16 +17,15 @@ const findUser = (params: FindUserParams): User | null => {
   const users = data && data[LocalDataKeys.USERS_DATA];
 
   if (users) {
-    const findUser = users
-      .find((localUser: LocalUser) => {
-        for (const key in params) {
-          if (localUser[key as keyof LocalUser] !== params[key as keyof FindUserParams]) {
-            return false;
-          }
+    const findUser = users.find((localUser: LocalUser) => {
+      for (const key in params) {
+        if (localUser[key as keyof LocalUser] !== params[key as keyof FindUserParams]) {
+          return false;
         }
+      }
 
-        return true;
-      });
+      return true;
+    });
   
     return findUser ? {
       id: findUser.id,
@@ -40,6 +39,10 @@ const findUser = (params: FindUserParams): User | null => {
   }
 
   return null;
+};
+
+const checkUser = (params: FindUserParams): boolean => {
+  return findUser(params) ? true : false;
 };
 
 const getCurrentUserLocal = (key: LocalDataKeys): User | null => {
@@ -58,11 +61,11 @@ const getUserFromLocalData = (login: string, password: string): User | null => {
 }
 
 const updateUserLocalData = (key: LocalDataKeys, user: User): void => {
-  const users = getLocalData(key);
-  const data = users && users[key];
+  const data = getLocalData(key);
+  const users = data && data[key];
 
-  if (Array.isArray(data)) {
-    const newData = data.map((localUser) => {
+  if (Array.isArray(users)) {
+    const newData = users.map((localUser) => {
       if (localUser.id === user.id) {
         return {...localUser, ...user};
       }
@@ -74,10 +77,22 @@ const updateUserLocalData = (key: LocalDataKeys, user: User): void => {
   }
 };
 
+const addUserToLocalData = (key: LocalDataKeys, user: LocalUser): void => {
+  const data = getLocalData(key);
+  const users = data && data[key];
+
+  if (Array.isArray(users)) {
+    users.push(user);
+    setLocalData(key, users);
+  }
+};
+
 export {
   getLocalData,
   setLocalData,
+  checkUser,
   getCurrentUserLocal,
   getUserFromLocalData,
-  updateUserLocalData
+  updateUserLocalData,
+  addUserToLocalData
 };

@@ -1,4 +1,4 @@
-import { UserStorage } from "../store/slices/login/login.types";
+import type { UserStorage } from "../store/slices/login/login.types";
 
 export const validationPageValue = (min: number, max: number, value: number): number => {
   if (value && value >= min) {
@@ -16,3 +16,13 @@ export const searchFilter = (string: string, data: UserStorage[]): number[] => {
   return data.filter(({title}) => title.includes(string)).map(({id}) => id);
 };
 
+export const fieldValidation = (value: string): boolean => {
+  return false;
+};
+
+export const randomInteger = (min: number = 0, max: number = 1000000000): number => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+
+  return Math.floor(Math.random() * (max - min) + min);
+}
