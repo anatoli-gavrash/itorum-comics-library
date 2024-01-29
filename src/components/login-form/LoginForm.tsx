@@ -49,7 +49,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
   
   return (
     <form className={styles.loginForm} onSubmit={handleFormSubmit}>
-      <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+      <FormControl className={styles.inputWrapper} variant="outlined">
         <InputLabel htmlFor="login">Логин</InputLabel>
         <OutlinedInput
           className={styles.input}
@@ -60,7 +60,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
           label="Логин"
         />
       </FormControl>
-      <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+      <FormControl className={styles.inputWrapper} variant="outlined">
         <InputLabel htmlFor="password">Пароль</InputLabel>
         <OutlinedInput
           className={styles.input}
@@ -84,7 +84,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
           label="Пароль"
         />
       </FormControl>
-      <ButtonMui className={styles.button} size='large' type='submit' sx={{height: 50}}>Войти</ButtonMui>
+      <ButtonMui className={styles.button} size='large' type='submit'>Войти</ButtonMui>
     </form>
   );
 };

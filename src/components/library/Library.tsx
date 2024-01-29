@@ -37,7 +37,7 @@ const Library: React.FC = () => {
   useEffect(() => {
     if (libData?.results) setComicsList(libData.results);
     if (libData?.total && libData?.limit) setMaxPages(Math.ceil(libData.total / libData.limit));
-  }, [libData]);
+  }, [libData?.results, libData?.total, libData?.limit]);
 
   return (
     <section className={styles.library}>

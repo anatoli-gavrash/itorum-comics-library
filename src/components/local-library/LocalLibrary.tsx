@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { searchFilter, validationPageValue } from '../../utils/utils';
 import type { Comic } from '../../store/slices/library/library.types';
 import type { UserStorage } from '../../store/slices/login/login.types';
-import styles from './LocalLibrary.scss';
+import styles from './LocalLibrary.module.scss';
 import Pagination from '../pagination';
 import ComicList from '../comic-list';
 import Search from '../search';
