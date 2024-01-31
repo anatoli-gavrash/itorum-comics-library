@@ -3,25 +3,24 @@ import { useEffect, useState } from 'react';
 import { Button as ButtonMui, Tooltip } from '@mui/material';
 import { AddShoppingCart, Favorite } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { getComic, libraryData, resetLibrary } from '../../store/slices/library/library-slice';
+import { getComic, libraryData, libraryStatus } from '../../store/slices/library/library-slice';
 import { addPurchase, currentUser, toggleFavorite } from '../../store/slices/login/login-slice';
 import styles from './Comic.module.scss';
+import Loader from '../loader';
 
 const Comic: React.FC = () => {
   const {idComic} = useParams();
   const dispatch = useAppDispatch();
   const user = useAppSelector(currentUser);
+  const libStatus = useAppSelector(libraryStatus);
   const libData = useAppSelector(libraryData);
   const comic = libData?.results?.[0];
+  const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const [isPurchase, setIsPurchase] = useState<boolean>(false);
   
   useEffect(() => {
     dispatch(getComic(Number(idComic)));
-
-    return () => {
-      dispatch(resetLibrary());
-    };
   }, [dispatch, idComic]);
 
   useEffect(() => {
@@ -33,13 +32,17 @@ const Comic: React.FC = () => {
     <article className={styles.comic}>
       <h2 className={styles.title}>Комикс</h2>
       <hr className={styles.delimeter} />
-      {comic ? 
-      <div className={styles.content}>
-        <img 
-          className={styles.image}
-          src={`${comic.thumbnail?.path}.${comic.thumbnail?.extension}`}
-          alt={comic.title}
-        />
+      {libStatus === 'loading' ? <Loader /> : comic ? <div className={styles.content}>
+        <div className={styles.imageWrapper}>
+          {!isImageLoaded && <Loader />}
+          <img 
+            className={isImageLoaded ? styles.image : `${styles.image} ${styles.hide}`}
+            src={`${comic.thumbnail?.path}.${comic.thumbnail?.extension}`}
+            alt={comic.title}
+            onLoadStart={() => setIsImageLoaded(false)}
+            onLoad={() => setIsImageLoaded(true)}
+          />
+        </div>
         <section className={styles.textBlock}>
           <h3 className={styles.comicTitle}>{comic.title || comic.variantDescription}</h3>
           <p className={styles.date}></p>

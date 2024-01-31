@@ -1,7 +1,8 @@
 .comic {
   display: flex;
-  flex-direction: column;
+  height: 100%;
   row-gap: 15px;
+  flex-direction: column;
 
   .title {
     padding: 0 0 0 15px;
@@ -19,6 +20,7 @@
 
   .content {
     display: flex;
+    height: 100%;
     gap: 25px;
     
     @media (max-width: 768px) {
@@ -26,18 +28,29 @@
       justify-content: center;
     }
 
-    .image {
-      width: 40%;
-      max-width: 540px;
+    .imageWrapper {
+      flex-shrink: 0;
+      width: 50%;
+      max-width: 450px;
 
       @media (max-width: 768px) {
-        width: 80%
+        flex-basis: 80%
+      }
+
+      .image {
+        width: 100%;
+      }
+
+      .hide {
+        height: 0;
       }
     }
+
 
     .textBlock {
       display: flex;
       flex-direction: column;
+      max-width: 550px;
       row-gap: 15px;
       padding: 15px 0;
 
