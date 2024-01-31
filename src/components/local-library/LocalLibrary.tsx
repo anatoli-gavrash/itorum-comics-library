@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getComicsFromIdList, libraryData, resetLibrary } from '../../store/slices/library/library-slice';
+import { getComicsFromIdList, libraryData } from '../../store/slices/library/library-slice';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { searchFilter, validationPageValue } from '../../utils/utils';
 import type { Comic } from '../../store/slices/library/library.types';
@@ -37,10 +37,6 @@ const LocalLibrary: React.FC<LocalLibraryProps> = (props) => {
           offset: offset
         }
       }))
-    };
-    
-    return () => {
-      dispatch(resetLibrary());
     };
   }, [dispatch, userData, offset, cardCountOnPage, searchValue]);
 

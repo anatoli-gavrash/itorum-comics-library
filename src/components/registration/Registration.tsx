@@ -13,10 +13,22 @@ import styles from './Registration.module.scss';
 import type { LocalUser } from '../../services/local-storage.types';
 import { LocalDataKeys } from '../../services/local-storage.types';
 import { addUserToLocalData, checkUser } from '../../services/local-storage';
-import { randomInteger } from '../../utils/utils';
+import { isObjectEmpty, randomInteger } from '../../utils/utils';
 
 interface RegistrationProps {
   setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+interface ValidationErrors {
+  login?: string
+  password?: string
+  rePassword?: string
+  firstname?: string
+  lastname?: string
+}
+
+interface UserValidation extends LocalUser {
+  rePassword?: string
 }
 
 const Registration: React.FC<RegistrationProps> = (props) => {
@@ -28,7 +40,47 @@ const Registration: React.FC<RegistrationProps> = (props) => {
   const [lastname, setLastname] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [rePassword, setRePassword] = useState<string>('');
-  const [isValid, setIsValid] = useState<boolean>(true);
+  const [errors, setErrors] = useState<ValidationErrors>({});
+  
+  const validation = (user: UserValidation): ValidationErrors => {
+    const errors: ValidationErrors = {};
+
+    if (!user.login) {
+      errors.login = 'Обязательное поле.';
+    } else if (user.login.length < 3) {
+      errors.login = 'Имя должно быть больше 3 символов.';
+    } else if (checkUser({login})) {
+      errors.login = 'Такой логин уже есть в базе.';
+    }
+
+    if (!user.firstname) {
+      errors.firstname = 'Обязательное поле.';
+    } else if (user.firstname.length < 3) {
+      errors.firstname = 'Имя должно быть больше 3 символов.';
+    }
+
+    if (!user.lastname) {
+      errors.lastname = 'Обязательное поле.';
+    } else if (user.lastname.length < 3) {
+      errors.lastname = 'Фамилия должна быть больше 3 символов';
+    }
+
+    if (!user.password) {
+      errors.password = 'Обязательное поле.';
+    } else if (user.password.length < 7) {
+      errors.password = 'Пароль должен быть больше 6 символов.';
+    }
+
+    if (!user.rePassword) {
+      errors.rePassword = 'Обязательное поле.';
+    } else if (user.rePassword.length < 7) {
+      errors.rePassword = 'Пароль должен быть больше 6 символов.';
+    } else if (user.password !== user.rePassword) {
+      errors.rePassword = 'Пароли не совпадают.';
+    }
+
+    return errors;
+  };
   
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleClickShowRePassword = () => setShowRePassword((show) => !show);
@@ -39,22 +91,30 @@ const Registration: React.FC<RegistrationProps> = (props) => {
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    
+    const newUser: UserValidation = {
+      id: randomInteger(),
+      login,
+      password,
+      rePassword,
+      firstname,
+      lastname,
+      avatar: '',
+      favorites: null,
+      purchases: null,
+    };
 
-    if (!checkUser({login})) {
-      const newUser: LocalUser = {
-        id: randomInteger(),
-        login,
-        password,
-        firstname,
-        lastname,
-        avatar: '',
-        favorites: null,
-        purchases: null,
-      };
-      
-      addUserToLocalData(LocalDataKeys.USERS_DATA, newUser);
+    const errors: ValidationErrors = validation(newUser);
+
+    if (isObjectEmpty(errors)) {
+      delete newUser.rePassword;
+      const user: LocalUser = {...newUser};
+
+      addUserToLocalData(LocalDataKeys.USERS_DATA, user);
       handleResetButton();
       setIsOpenModal(false);
+    } else {
+      setErrors(errors);
     }
   };
 
@@ -76,14 +136,14 @@ const Registration: React.FC<RegistrationProps> = (props) => {
           label="Логин"
           value={login}
           onChange={(e) => setLogin(e.target.value)}
-          error={!isValid}
+          error={errors.login ? true : false}
         />
         <FormHelperText
           className={styles.error}
           id={'login'}
           title={''}
-          error={!isValid}
-        ></FormHelperText>
+          error={errors.login ? true : false}
+        >{errors.login}</FormHelperText>
       </FormControl>
       <FormControl className={styles.inputWrapper} variant="outlined">
         <InputLabel htmlFor="firstname">Имя</InputLabel>
@@ -93,14 +153,14 @@ const Registration: React.FC<RegistrationProps> = (props) => {
           label="Имя"
           value={firstname}
           onChange={(e) => setFirstname(e.target.value)}
-          error={!isValid}
+          error={errors.firstname ? true : false}
         />
         <FormHelperText
           className={styles.error}
           id={'firstname'}
           title={''}
-          error={!isValid}
-        ></FormHelperText>
+          error={errors.firstname ? true : false}
+        >{errors.firstname}</FormHelperText>
       </FormControl>
       <FormControl className={styles.inputWrapper} variant="outlined">
         <InputLabel htmlFor="lastname">Фамилия</InputLabel>
@@ -110,14 +170,14 @@ const Registration: React.FC<RegistrationProps> = (props) => {
           label="Фамилия"
           value={lastname}
           onChange={(e) => setLastname(e.target.value)}
-          error={!isValid}
+          error={errors.lastname ? true : false}
         />
         <FormHelperText
           className={styles.error}
           id={'lastname'}
           title={''}
-          error={!isValid}
-        ></FormHelperText>
+          error={errors.lastname ? true : false}
+        >{errors.lastname}</FormHelperText>
       </FormControl>
       <FormControl className={styles.inputWrapper} variant="outlined">
         <InputLabel htmlFor="password">Пароль</InputLabel>
@@ -127,7 +187,7 @@ const Registration: React.FC<RegistrationProps> = (props) => {
           label="Пароль"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          error={!isValid}
+          error={errors.password ? true : false}
           type={showPassword ? 'text' : 'password'}
           endAdornment={
             <InputAdornment position="end">
@@ -146,8 +206,8 @@ const Registration: React.FC<RegistrationProps> = (props) => {
           className={styles.error}
           id={'password'}
           title={''}
-          error={!isValid}
-        ></FormHelperText>
+          error={errors.password ? true : false}
+        >{errors.password}</FormHelperText>
       </FormControl>
       <FormControl className={styles.inputWrapper} variant="outlined">
         <InputLabel htmlFor="re-password">Повторите пароль</InputLabel>
@@ -157,7 +217,7 @@ const Registration: React.FC<RegistrationProps> = (props) => {
           label="Повторите пароль"
           value={rePassword}
           onChange={(e) => setRePassword(e.target.value)}
-          error={!isValid}
+          error={errors.rePassword ? true : false}
           type={showRePassword ? 'text' : 'password'}
           endAdornment={
             <InputAdornment position="end">
@@ -176,8 +236,8 @@ const Registration: React.FC<RegistrationProps> = (props) => {
           className={styles.error}
           id={'re-password'}
           title={''}
-          error={!isValid}
-        ></FormHelperText>
+          error={errors.rePassword ? true : false}
+        >{errors.rePassword}</FormHelperText>
       </FormControl>
       <div className={styles.buttons}>
         <ButtonMui

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getComics, libraryData, resetLibrary } from '../../store/slices/library/library-slice';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getComics, libraryData } from '../../store/slices/library/library-slice';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import type { Comic } from '../../store/slices/library/library.types';
 import { validationPageValue } from '../../utils/utils';
@@ -10,6 +10,7 @@ import ComicList from '../comic-list';
 import Search from '../search';
 
 const Library: React.FC = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const libData = useAppSelector(libraryData);
   const {idLibrary} = useParams();
@@ -20,13 +21,10 @@ const Library: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const defaultPath = '/';
   const currentPage = validationPageValue(1, maxPages, Number(idLibrary));
-
+  
   useEffect(() => {
+    if (Number(idLibrary) !== currentPage) navigate(`${defaultPath}page/${currentPage}`);
     dispatch(getComics({limit: cardCountOnPage, offset: offset, titleStartsWith: searchValue}));
-
-    return () => {
-      dispatch(resetLibrary());
-    };
   }, [dispatch, offset, cardCountOnPage, searchValue]);
 
   useEffect(() => {
