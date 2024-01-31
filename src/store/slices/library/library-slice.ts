@@ -4,7 +4,11 @@ import { fetchComic, fetchComics, fetchComicsFromIdList } from "./library-servic
 
 const initialState: Library = {
   response: null,
-  status: 'empty'
+  status: 'empty',
+  newest: {
+    response: null,
+    status: 'empty'
+  }
 };
 
 export const librarySlice = createAppSlice({
@@ -41,6 +45,21 @@ export const librarySlice = createAppSlice({
         state.status = 'error';
       }
     }),
+    getNewestComics: create.asyncThunk(async (params: ParamsComics) => {
+      return await fetchComics(params);
+    },
+    {
+      pending: (state) => {
+        state.newest.status = 'loading';
+      },
+      fulfilled: (state, action) => {
+        state.newest.response = action.payload;
+        state.newest.status = 'done';
+      },
+      rejected: (state) => {
+        state.newest.status = 'error';
+      }
+    }),
     getComicsFromIdList: create.asyncThunk(async (values: LibraryActionValues) => {
       return await fetchComicsFromIdList(values);
     },
@@ -55,18 +74,15 @@ export const librarySlice = createAppSlice({
       rejected: (state) => {
         state.status = 'error';
       }
-    }),
-    resetLibrary: create.reducer((state) => {
-      state.response = null;
-      state.status = 'empty';
     })
   }),
   selectors: {
     libraryResponse: (library) => library.response,
     libraryStatus: (library) => library.status,
     libraryData: (library) => library.response?.data,
+    libraryNewestData: (library) => library.newest.response?.data
   }
 });
 
-export const {getComic, getComics, getComicsFromIdList, resetLibrary} = librarySlice.actions;
-export const {libraryResponse, libraryStatus, libraryData} = librarySlice.selectors;
+export const {getComic, getComics, getNewestComics, getComicsFromIdList} = librarySlice.actions;
+export const {libraryResponse, libraryStatus, libraryData, libraryNewestData} = librarySlice.selectors;

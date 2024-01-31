@@ -1,6 +1,12 @@
 export interface Library {
   response: MarvelResponseData | null
   status: 'empty' | 'loading' | 'done' | 'error'
+  newest: LibraryData
+}
+
+export interface LibraryData {
+  response: MarvelResponseData | null
+  status: 'empty' | 'loading' | 'done' | 'error'
 }
 
 export interface UrlParts {

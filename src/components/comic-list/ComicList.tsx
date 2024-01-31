@@ -18,7 +18,7 @@ const ComicList: React.FC<ComicListProps> = (props) => {
       {cardList && cardList.map((item, index) => item && (
         <li className={styles.item} key={`li-${index}-${item.id}`}>
           {status === 'loading' ? <Loader /> : <Card
-            data={{id: item.id!, title: item.title!}}
+            id={item.id!}
             image={`${item.thumbnail?.path}.${item.thumbnail?.extension}`}
             title={`${item.title}`}
           />}

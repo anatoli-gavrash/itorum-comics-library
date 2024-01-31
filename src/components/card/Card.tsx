@@ -9,23 +9,20 @@ import styles from './Card.module.scss';
 import Loader from '../loader';
 
 interface CardProps {
-  data: {
-    id: number,
-    title: string
-  },
+  id: number,
   image: string,
   title: string,
 }
 
 const Card: React.FC<CardProps> = (props) => {
-  const {data, image, title} = props;
+  const {id, image, title} = props;
   const user = useAppSelector(currentUser);
   const dispatch = useAppDispatch();
   const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
   
   return (
     <div className={styles.card}>
-      <Link className={styles.link} to={`/comic/${data.id}`}>
+      <Link className={styles.link} to={`/comic/${id}`}>
         {!isImageLoaded && <Loader />}
         <img 
           className={isImageLoaded ? styles.image : `${styles.image} ${styles.hide}`}
@@ -34,19 +31,19 @@ const Card: React.FC<CardProps> = (props) => {
           onLoadStart={() => setIsImageLoaded(false)}
           onLoad={() => setIsImageLoaded(true)}
         />
-        <h3 className={styles.title}>{title}</h3>
+        <h3 className={styles.title} title={title}>{title}</h3>
       </Link>
       {user && <div className={styles.buttonsWrapper}>
         <IconButton
-          className={`${styles.button} ${user.favorites?.find(({id: comicId}) => comicId === data.id) ? styles.active : ''}`}
-          onClick={() => dispatch(toggleFavorite(data))}
+          className={`${styles.button} ${user.favorites?.find(({id: comicId}) => comicId === id) ? styles.active : ''}`}
+          onClick={() => dispatch(toggleFavorite({id, title}))}
         >
           <Favorite />
         </IconButton>
         <IconButton
           className={`${styles.button} ${styles.purchase}`}
-          disabled={!!user.purchases?.find(({id: comicId}) => comicId === data.id)}
-          onClick={() => dispatch(addPurchase(data))}
+          disabled={!!user.purchases?.find(({id: comicId}) => comicId === id)}
+          onClick={() => dispatch(addPurchase({id, title}))}
         >
           <AddShoppingCart />
         </IconButton>
