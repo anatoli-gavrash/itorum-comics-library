@@ -1,9 +1,7 @@
 # itorum-comics-library
 Technical task "comics library" for Itorum company
 
-UPD:
-- Деплой мейн ветки - https://comics-library.netlify.app/
-- Деплой актуальной версии (все задачи закрыты) - https://deploy-preview-2--comics-library.netlify.app/
+- Деплой - https://comics-library.netlify.app/
 
 ## Используемые технологии
 React + ReduxToolkit + TypeScript
