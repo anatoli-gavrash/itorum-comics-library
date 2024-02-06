@@ -41,6 +41,10 @@
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
     }
+
+    .hide {
+      height: 0;
+    }
   }
 
   .buttonsWrapper {
@@ -58,11 +62,23 @@
       border-radius: 2px;
       background-color: var(--color-bkgr-main-transp);
       transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-    }
 
-    .button:hover {
-      background-color: var(--color-bkgr-main-transp);
-      color: var(--color-sandy);
+      &:hover {
+        background-color: var(--color-bkgr-main-transp);
+        color: var(--color-sandy);
+      }
+
+      &.active {
+        color: var(--color-red);
+
+        &:hover {
+          color: var(--color-red-light);
+        }
+      }
+
+      &.purchase:hover {
+        color: var(--color-green);  
+      }
     }
   }
 }

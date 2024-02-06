@@ -8,20 +8,10 @@ import {
   OutlinedInput
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import styles from './LoginForm.module.scss';
 import { useAppDispatch } from '../../hooks/hooks';
 import { setCurrentUser } from '../../store/slices/login/login-slice';
-import iconItorum from '../../assets/img/jpg/icon__itorum.jpg';
-import type { User } from '../../store/slices/login/login.types';
-
-const defaultUser: User = {
-  id: 999999,
-  login: 'itorum',
-  firstname: 'Дмитрий',
-  lastname: 'Бахметьев',
-  avatar: iconItorum,
-  purchases: null
-}
+import { getUserFromLocalData } from '../../services/local-storage';
+import styles from './LoginForm.module.scss';
 
 interface LoginFormProps {
   setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>
@@ -41,16 +31,14 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
     event.preventDefault();
   };
 
-  const validation = (login: string, password: string): boolean => {
-    return login === import.meta.env.VITE_LOGIN && password === import.meta.env.VITE_PASSWORD;
-  }
-
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (validation(login, password)) {
+    const user = getUserFromLocalData(login, password);
+
+    if (user) {
       setIsValid(true);
-      dispatch(setCurrentUser(defaultUser));
+      dispatch(setCurrentUser(user));
       setIsOpenModal(false);
       setLogin('');
       setPassword('');
@@ -61,7 +49,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
   
   return (
     <form className={styles.loginForm} onSubmit={handleFormSubmit}>
-      <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+      <FormControl className={styles.inputWrapper} variant="outlined">
         <InputLabel htmlFor="login">Логин</InputLabel>
         <OutlinedInput
           className={styles.input}
@@ -72,7 +60,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
           label="Логин"
         />
       </FormControl>
-      <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+      <FormControl className={styles.inputWrapper} variant="outlined">
         <InputLabel htmlFor="password">Пароль</InputLabel>
         <OutlinedInput
           className={styles.input}
@@ -96,7 +84,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
           label="Пароль"
         />
       </FormControl>
-      <ButtonMui className={styles.button} size='large' type='submit' sx={{height: 50}}>Войти</ButtonMui>
+      <ButtonMui className={styles.button} size='large' type='submit'>Войти</ButtonMui>
     </form>
   );
 };

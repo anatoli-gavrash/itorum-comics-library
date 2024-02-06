@@ -1,6 +1,12 @@
 export interface Library {
   response: MarvelResponseData | null
   status: 'empty' | 'loading' | 'done' | 'error'
+  newest: LibraryData
+}
+
+export interface LibraryData {
+  response: MarvelResponseData | null
+  status: 'empty' | 'loading' | 'done' | 'error'
 }
 
 export interface UrlParts {
@@ -9,6 +15,11 @@ export interface UrlParts {
   type: 'public'
   resources: 'comics'
   id?: number
+}
+
+export interface LibraryActionValues {
+  idList: number[],
+  customParams: ParamsComics
 }
 
 export interface Params {
@@ -60,7 +71,7 @@ export interface ComicsData {
   limit?: number
   total?: number
   count?: number
-  results?: [Comic]
+  results?: Comic[]
 }
 
 export interface Comic {
@@ -93,9 +104,9 @@ export interface Comic {
     }
   ]
   series?: ComicResource
-  variants?: [ComicResource]
-  collections?: [ComicResource]
-  collectedIssues?: [ComicResource]
+  variants?: ComicResource[]
+  collections?: ComicResource[]
+  collectedIssues?: ComicResource[]
   dates?: [
     {
       type: string
@@ -109,7 +120,7 @@ export interface Comic {
     }
   ]
   thumbnail?: ComicImage
-  images?: [ComicImage]
+  images?: ComicImage[]
   creators?: ComicListPerson
   characters?: ComicListPerson
   stories?: ComicListStory
@@ -138,13 +149,13 @@ export interface ComicList {
   available?: number
   returned?: number
   collectionURI?: string
-  items?: [ComicResource]
+  items?: ComicResource[]
 }
 
 export interface ComicListPerson extends ComicList {
-  items?: [ComicResourcePerson]
+  items?: ComicResourcePerson[]
 }
 
 export interface ComicListStory extends ComicList {
-  items?: [ComicResourceStory]
+  items?: ComicResourceStory[]
 }

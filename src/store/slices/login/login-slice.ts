@@ -1,9 +1,9 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "../createAppSlice";
-import type { Login, User } from "./login.types";
+import type { Login, User, UserStorage } from "./login.types";
 
 const initialState: Login = {
-  currentUser: null
+  currentUser: undefined
 };
 
 export const loginSlice = createAppSlice({
@@ -13,10 +13,27 @@ export const loginSlice = createAppSlice({
     setCurrentUser: create.reducer((state, action: PayloadAction<User | null>) => {
       state.currentUser = action.payload;
     }),
-    addPurchase: create.reducer((state, action: PayloadAction<number>) => {
+    toggleFavorite: create.reducer((state, action: PayloadAction<UserStorage>) => {
+      if (state.currentUser?.favorites === null) {
+        state.currentUser.favorites = [];
+      }
+      
+      if (state.currentUser?.favorites) {
+        if (!state.currentUser.favorites.find(({id}) => id === action.payload.id)) {
+          state.currentUser.favorites.push(action.payload);
+        } else {
+          state.currentUser.favorites = state.currentUser.favorites.filter(({id}) => id !== action.payload.id);
+        }
+      }
+    }),
+    addPurchase: create.reducer((state, action: PayloadAction<UserStorage>) => {
+      if (state.currentUser?.purchases === null) {
+        state.currentUser.purchases = [];
+      }
+      
       if (
         state.currentUser?.purchases &&
-        !state.currentUser?.purchases.find((value) => value === action.payload
+        !state.currentUser?.purchases.find(({id}) => id === action.payload.id
       )) {
         state.currentUser.purchases.push(action.payload);
       }
@@ -27,5 +44,5 @@ export const loginSlice = createAppSlice({
   }
 });
 
-export const {setCurrentUser, addPurchase} = loginSlice.actions;
+export const {toggleFavorite, setCurrentUser, addPurchase} = loginSlice.actions;
 export const {currentUser} = loginSlice.selectors;

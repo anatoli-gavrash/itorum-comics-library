@@ -1,17 +1,24 @@
 .nav {
   display: flex;
   column-gap: 10px;
-  
-  .link {
+  align-items: center;
+
+  .list {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px;
-    color: white;
-    transition: color 0.2s ease-in-out;
-  }
-  
-  .link:hover {
-    color: var(--color-sandy);
+    column-gap: 10px;
+    list-style: none;
+    
+    .link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      color: white;
+      transition: color 0.2s ease-in-out;
+    }
+    
+    .link:hover {
+      color: var(--color-sandy);
+    }
   }
 }

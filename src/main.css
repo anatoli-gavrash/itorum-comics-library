@@ -6,6 +6,9 @@
 
 :root {
   --color-sandy: rgba(245, 222, 179);
+  --color-green: hsl(118, 90%, 39%);
+  --color-red: hsl(1, 90%, 55%);
+  --color-red-light: hsl(1, 90%, 75%);
   --color-font-gray: rgb(204, 204, 204);
   --color-bkgr-main: rgb(31, 31, 31);
   --color-bkgr-main-transp: rgba(31, 31, 31, 0.75);

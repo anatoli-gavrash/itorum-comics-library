@@ -1,4 +1,4 @@
-import type { ParamsComics, UrlParts, MarvelResponseData } from "./library.types";
+import type { ParamsComics, UrlParts, MarvelResponseData, ComicsData, LibraryActionValues } from "./library.types";
 
 const urlParts: UrlParts = {
   baseUrl: 'https://gateway.marvel.com',
@@ -16,7 +16,7 @@ const createUrl = (pathParts: UrlParts, params?: ParamsComics): string => {
   let finalParams = '';
 
   if (params) {
-    const tempParams = Object.fromEntries(Object.entries(params).filter(([_, v]) => v !== ''));
+    const tempParams = Object.fromEntries(Object.entries(params).filter((pair) => pair[1] !== ''));
     finalParams = '?' + Object.entries(tempParams).map((pair) => pair.join('=')).join('&');
   }
 
@@ -44,12 +44,41 @@ const fetchComics = async (customParams?: ParamsComics): Promise<MarvelResponseD
   return (await fetchData(createUrl(urlParts, params))).json();
 };
 
-const getLocalData = (key: string) => {
-  return JSON.parse(localStorage.getItem(key) || '');
+const fetchComicsFromIdList = async (values: LibraryActionValues): Promise<MarvelResponseData> => {
+  const {idList, customParams} = values;
+  
+  const fetchList = idList
+    .toSorted((a, b) => a - b)
+    .slice(
+      customParams?.offset ? customParams.offset : 0,
+      customParams?.limit && customParams?.offset ? customParams.offset + customParams.limit : 20
+    ).map((id) => fetchComic(id));
+
+  const customComicsData: ComicsData = {
+    offset: customParams?.offset || 0,
+    limit: customParams?.limit || 20,
+    total: idList.length,
+    count: fetchList.length,
+  };
+
+  const responseArray = await Promise.all(fetchList);
+  const response = responseArray.reduce((accumResponse, response) => {
+    if (accumResponse.etag) {
+      if (accumResponse?.data) {
+        accumResponse.data = {...accumResponse.data, ...customComicsData};
+      }
+
+      delete(accumResponse.etag)
+    };
+
+    if (accumResponse.data?.results && response.data?.results?.[0]) {
+      accumResponse.data.results.push(response.data.results[0]);
+    }
+
+    return accumResponse;
+  });
+
+  return response;
 };
 
-const setLocalData = (key: string, data: any) => {
-  localStorage.setItem(key, JSON.stringify(data));
-};
-
-export {fetchComic, fetchComics};
+export {fetchComic, fetchComics, fetchComicsFromIdList};

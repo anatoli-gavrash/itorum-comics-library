@@ -1,14 +1,23 @@
 .loginForm {
   display: flex;
   flex-direction: column;
-  row-gap: 15px;
+  width: 270px;
   padding: 15px;
+  row-gap: 15px;
   border: 1px solid var(--color-border-white-transp-med);
   border-radius: 4px;
   background-color: var(--color-bkgr-main-transp);
   box-shadow: 0px 0px 11px -3px var(--color-sandy);
 
-  .input {
-    color: var(--color-font-gray);
+  .inputWrapper {
+    margin: 8px;
+
+    .input {
+      color: var(--color-font-gray);
+    }
+  }
+
+  .button {
+    height: 50px;
   }
 }

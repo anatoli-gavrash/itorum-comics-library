@@ -1,5 +1,5 @@
 export interface Login {
-  currentUser: User | null
+  currentUser: User | null | undefined
 }
 
 export interface User {
@@ -8,5 +8,11 @@ export interface User {
   firstname: string
   lastname: string
   avatar: string
-  purchases: [number] | null
+  favorites: UserStorage[] | null
+  purchases: UserStorage[] | null
+}
+
+export interface UserStorage {
+  id: number,
+  title: string
 }

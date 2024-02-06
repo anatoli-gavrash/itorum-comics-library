@@ -1,6 +1,6 @@
 import { 
-  Pagination as PaginationMUI,
-  PaginationItem as PaginationItemMUI
+  Pagination as PaginationMui,
+  PaginationItem as PaginationItemMui
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import styles from './Pagination.module.scss';
@@ -15,7 +15,7 @@ const Pagination: React.FC<PaginationProps> = (props) => {
   const {path, currentPage, maxPages} = props;
 
   return (
-    <PaginationMUI
+    <PaginationMui
       className={styles.pagination}
       page={currentPage}
       count={maxPages}
@@ -26,7 +26,7 @@ const Pagination: React.FC<PaginationProps> = (props) => {
       showLastButton
       sx={{margin: "0 auto"}}
       renderItem={(item) => (
-        <PaginationItemMUI
+        <PaginationItemMui
           component={Link}
           to={`${path}page/${item.page}`}
           {...item}
